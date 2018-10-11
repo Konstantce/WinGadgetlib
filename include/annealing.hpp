@@ -98,20 +98,30 @@ namespace gadgetlib
 
 					auto val = FieldT(ie->witness_);
 					auto idx = index_range.first;
-					while (idx <= index_range.second)
+					unsigned index_pos = 0;
+					if (node->bitsize_ < FieldT::safe_bitsize)
 					{
-						pboard.assignment[idx++] = val % 2;
-						val /= 2;
+						while (idx <= index_range.second)
+						{
+							pboard.assignment[idx++] = val.get_bit_at_pos(index_pos++);
+						}
+					}
+					else
+					{
+						while (idx <= index_range.second)
+						{
+							pboard.assignment[idx++] = val.get_bit_at_pos_unreduced(index_pos++);
+						}
 					}
 				}
 				else if (auto* ce = dynamic_cast<const_node*>(node))
 				{
 					FieldT value = FieldT(ce->value_);
 					var_index_t idx = index_range.first;
+					unsigned index_pos = 0;
 					for (unsigned i = 0; i < node->bitsize_; i++)
 					{
-						uint32_t bit = value % 2;
-						value /= 2;
+						FieldT bit = value.get_bit_at_pos(index_pos++);
 						pboard.add_r1cs_constraint(1, pboard.idx2var(idx), bit);
 						pboard.assignment[idx++] = bit;
 					}

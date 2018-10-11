@@ -539,6 +539,7 @@ namespace gadgetlib
 	}
 
 	//first are public inputs, and then private
+	//NB: may contain a very subtle bug, check it later!
 	gadget blackjack_dealer_proof(const gadget& num, const gadget& index, const gadget& dealer_commitment,
 		const gadget& player_shuffle_str, const gadget& dealer_secret_shuffle_str, 
 		const gadget& dealer_salt, unsigned deck_size, size_t index_len)
@@ -571,9 +572,9 @@ namespace gadgetlib
 		for (unsigned i = 0; i < deck_size; i++)
 		{
 			if (i == 0)
-				check_shuffle = (sorted[i] == gadget(deck_size - i - 1, bits_per_card));
+				check_shuffle = (sorted[i] == gadget(deck_size - i, bits_per_card));
 			else
-				check_shuffle = ALL(check_shuffle, (sorted[i] == gadget(deck_size - i - 1, bits_per_card)));
+				check_shuffle = ALL(check_shuffle, (sorted[i] == gadget(deck_size - i, bits_per_card)));
 		}
 		//check that chosen card is correct
 		gadget x = chooser_gadget(dealer_secret_shuffle, index);

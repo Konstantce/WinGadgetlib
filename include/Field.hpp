@@ -18,6 +18,7 @@ namespace gadgetlib
 	{
 	public:
 		NTL::ZZ_p num_;
+		NTL::ZZ unreduced_num_;
 		static bool initialized_;
 		static NTL::ZZ chp;
 
@@ -67,6 +68,7 @@ namespace gadgetlib
 
 				}
 			}
+			unreduced_num_ = val;
 			return val;
 		}
 		
@@ -142,16 +144,14 @@ namespace gadgetlib
 			return *this;
 		}
 
-
-		Field& operator/=(const Field& rhs)
-		{
-			this->num_ = NTL::conv<NTL::ZZ_p>(NTL::rep(num_) / NTL::rep(rhs.num_));
-			return *this;
-		}
-
 		static Field one()
 		{
 			return 1;
+		}
+
+		static Field zero()
+		{
+			return 0;
 		}
 
 		operator bool() const
@@ -170,6 +170,16 @@ namespace gadgetlib
 		{
 			NTL::ZZ_p inverse = NTL::conv<NTL::ZZ_p>(NTL::InvMod(NTL::rep(num_), chp));
 			return Field(inverse);
+		}
+
+		Field get_bit_at_pos(unsigned index)
+		{
+			return (NTL::bit(NTL::conv<NTL::ZZ>(num_), index) ? Field::one() : Field::zero());
+		}
+
+		Field get_bit_at_pos_unreduced(unsigned index)
+		{
+			return (NTL::bit(unreduced_num_, index) ? Field::one() : Field::zero());
 		}
 	};
 
@@ -206,14 +216,6 @@ namespace gadgetlib
 		const Field<T>& right)
 	{
 		return (left.num_ != right.num_);
-	}
-
-	template<typename T>
-	Field<T> operator%(const Field<T>& left,
-		int right)
-	{
-		assert(right == 2);
-		return NTL::rem(rep(left.num_), right);
 	}
 
 	template<typename T>

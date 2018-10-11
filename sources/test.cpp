@@ -32,7 +32,14 @@ struct small_test_field_impl
 	static constexpr size_t safe_bitsize = 251;
 };
 
-using inner_field_impl = very_large_test_field_impl;
+struct alt_bn128
+{
+	static constexpr const char* characteristics
+		= "21888242871839275222246405745257275088696311157297823662689037894645226208583";
+	static constexpr size_t safe_bitsize = 250;
+};
+
+using inner_field_impl = alt_bn128;
 using field = Field<inner_field_impl>;
 
 
@@ -351,7 +358,7 @@ void check_shuffle()
 	unsigned BITS_PER_CARD = 6;
 	
 	std::vector<gadget> initial_permutation;
-	for (int i = NUM_OF_CARDS - 1; i >= 0; i--)
+	for (int i = NUM_OF_CARDS; i > 0; i--)
 	{
 		initial_permutation.emplace_back(i, BITS_PER_CARD, true);
 	}
@@ -368,11 +375,11 @@ void check_shuffle()
 
 void check_blackjack()
 {
-	int NUM_OF_CARDS = 52;
+	unsigned int NUM_OF_CARDS = 52;
 	unsigned BITS_PER_CARD = 6;
 
 	std::vector<unsigned> initial_permutation;
-	for (unsigned i = 0; i < NUM_OF_CARDS; i++)
+	for (unsigned i = 1; i <= NUM_OF_CARDS; i++)
 	{
 		initial_permutation.emplace_back(i);
 	}

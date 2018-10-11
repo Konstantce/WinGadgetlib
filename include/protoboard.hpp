@@ -331,10 +331,10 @@ namespace gadgetlib
 			var_index_t end = bits.second;
 			FieldT val = assignment[whole];
 			var_index_t idx = start;
+			unsigned index_pos = 0;
 			while (idx <= end)
 			{
-				assignment[idx] = val % 2;
-				val /= 2;
+				assignment[idx] = val.get_bit_at_pos(index_pos++);
 				idx++;
 			}
 		}
