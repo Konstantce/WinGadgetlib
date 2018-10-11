@@ -44,7 +44,7 @@ Simple, right? This gadget will be automatically transformed to corresponding R1
 3. Plasma single transaction gadget. This is a part of the logic gadget for our zk-SNARK governed plasma implementation. For further details see our [reference paper](https://github.com/matterinc/research/blob/master/zkSNARKs/zkSNARKgovernedPlasma/zkSNARKs%20governed%20Plasma%20by%20Matter%20Inc%2C%20informal%20spec.md).
 4. Blackjack gadget - main gadget for zk-SNARK driven classical blackjack game.
 
-All gadgets for afforementioned circuits are located in [*basic_gadgets.hpp*](../blob/master/include/basic_gadgets.hpp)
+All gadgets for afforementioned circuits are located in [*basic_gadgets.hpp*](../master/include/basic_gadgets.hpp)
 
 ___
 
